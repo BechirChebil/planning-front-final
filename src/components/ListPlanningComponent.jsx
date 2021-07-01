@@ -41,6 +41,7 @@ class ListPlanningComponent extends Component {
             <div>
                 <h2 className="text-center">list Planning</h2>
                     <button className="btn btn-primary" onClick={this.addPlanning}>Add Planning</button>
+                    <br></br><br></br>
                 <div className="row">
                     <table className = "table table-striped table-bordered">
                         <thead>

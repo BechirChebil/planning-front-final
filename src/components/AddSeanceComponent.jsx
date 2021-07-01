@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PlanningService from '../services/PlanningService';
 import SeanceService from '../services/SeanceService';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import TextField from '@material-ui/core/TextField';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import DateTimePicker from '@material-ui/lab/DateTimePicker';
+import moment from 'moment';
 
+const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
 
 class AddSeanceComponent extends Component {
 
@@ -20,7 +27,7 @@ class AddSeanceComponent extends Component {
             date: '',
             creneau: '',
             planning: null,
-            plannings:[]
+            plannings: []
         }
 
         this.changeTitreHandler = this.changeTitreHandler.bind(this);
@@ -38,8 +45,8 @@ class AddSeanceComponent extends Component {
 
 
     componentDidMount() {
-        PlanningService.getPlannings().then((res)=>{
-            this.setState({plannings: res.data})
+        PlanningService.getPlannings().then((res) => {
+            this.setState({ plannings: res.data })
         })
         if (this.state.id === -1) {
             return
@@ -110,8 +117,10 @@ class AddSeanceComponent extends Component {
         this.setState({ creneau: event.target.value });
     }
 
-    changeDateHandler = (event) => {
-        this.setState({ date: event.target.value });
+    changeDateHandler = (value) => {
+        console.log(value);
+        const formattedDateTime = moment(value).format(DATE_TIME_FORMAT);
+        this.setState({ date: formattedDateTime });
     }
 
     changePlanningHandler = (event) => {
@@ -150,26 +159,35 @@ class AddSeanceComponent extends Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Objectif:</label>
-                                        <input placeholder="objectif" name="objectif" className="form-control"
+                                        <TextareaAutosize
+                                            aria-label="empty textarea"
+                                            placeholder="Objectif"
+                                            style={{ width: 590 }}
+                                            className="form-control"
                                             value={this.state.objectif} onChange={this.changeObjectifHandler} />
                                     </div>
                                     <div className="form-group">
                                         <label>indication Tuteur:</label>
-                                        <input placeholder="indication Tuteur" name="indicationTuteur" className="form-control"
-                                            value={this.state.indicationTuteur} onChange={this.changeIndicationTuteurHandler} />
+                                        <TextareaAutosize
+                                            aria-label="empty textarea"
+                                            placeholder="indication Tuteur"
+                                            style={{ width: 590 }}
+                                            className="form-control"
+                                            value={this.state.indicationTuteur} onChange={this.changeIndicationTuteurHandler}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <label>indication Etudiant:</label>
-                                        <input placeholder="indication Etudiant" name="indicationEtudiant" className="form-control"
-                                            value={this.state.indicationEtudiant} onChange={this.changeIndicationEtudiantHandler} />
+                                        <TextareaAutosize
+                                            aria-label="empty textarea"
+                                            placeholder="indication Etudiant"
+                                            style={{ width: 590 }}
+                                            className="form-control"
+                                            value={this.state.indicationEtudiant} onChange={this.changeIndicationEtudiantHandler}
+                                        />
                                     </div>
 
-
-                                    <div className="form-group">
-                                        <label>Date:</label>
-                                        <input placeholder="yyyy-MM-dd HH:mm" name="date" className="form-control"
-                                            value={this.state.date} onChange={this.changeDateHandler} />
-                                    </div>
+                                    
                                     <div className="form-group">
                                         <label>Creneau:</label>
                                         <select className="form-select" value={this.state.creneau} onChange={this.changeCreneauHandler}>
@@ -177,18 +195,36 @@ class AddSeanceComponent extends Component {
                                             <option value="matin">matin</option>
                                             <option value="midi">midi</option>
                                         </select>
-                                       
+
                                     </div>
                                     <div className="form-group">
                                         <label>Planning:</label><br></br>
-                                       
-                                       <select className="form-select" value={this.state.planning} onChange={this.changePlanningHandler}>
-                                       <option value="" disabled selected>Select planning</option>
-                                           {this.state.plannings.map((planning) => (
-                                               <option value={planning.id}>{planning.titre}</option>
-                                           ))}
-                                       </select>
-                                        
+
+                                        <select className="form-select" value={this.state.planning} onChange={this.changePlanningHandler}>
+                                            <option value="" disabled selected>Select planning</option>
+                                            {this.state.plannings.map((planning) => (
+                                                <option value={planning.id}>{planning.titre}</option>
+                                            ))}
+                                        </select>
+
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Date:</label>
+                                        {/* <input type="datetime-local" placeholder="yyyy-MM-dd HH:mm" name="date" className="form-control"
+                                            value={this.state.date} onChange={this.changeDateHandler} /> */}
+                                        <div>
+                                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                <DateTimePicker
+                                                    inputFormat='yyyy-MM-dd HH:mm'
+                                                    renderInput={(props) => <TextField {...props} />}
+                                                    //label="DateTimePicker"
+                                                    
+                                                    className="form-time"
+                                                    value={this.state.date}
+                                                    onChange={(newValue) => this.changeDateHandler(newValue)}
+                                                />
+                                            </LocalizationProvider>
+                                        </div>
                                     </div>
                                     <br></br>
 

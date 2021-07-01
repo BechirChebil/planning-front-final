@@ -2,21 +2,24 @@ import React, { Component } from 'react';
 
 class HomeComponent extends Component {
 
-    cancel(){
+    cancel() {
         this.props.history.push('/phases');
     }
-    cancel1(){
+    cancel1() {
         this.props.history.push('/seances');
     }
-    cancel2(){
+    cancel2() {
         this.props.history.push('/plannings');
     }
     render() {
         return (
             <div>
-               <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft:"450px"}}>PHASE</button>
-                <button className="btn btn-danger" onClick={this.cancel1.bind(this)} style={{marginLeft:"10px"}}>SEANCE</button>
-               <button className="btn btn-danger" onClick={this.cancel2.bind(this)} style={{marginLeft:"10px"}}>PLANNING</button>
+                <br></br>
+                <button className="btn btn-danger" onClick={this.cancel2.bind(this)} style={{ marginLeft: "100px", width: "200px" }}>PLANNING</button>
+                <button className="btn btn-danger" onClick={this.cancel1.bind(this)} style={{ marginLeft: "200px", width: "200px" }}>SEANCE</button>
+                <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ marginLeft: "200px", width: "200px" }}>PHASE</button>
+
+
 
 
             </div>

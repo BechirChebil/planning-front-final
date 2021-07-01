@@ -2,9 +2,19 @@ import React, { Component } from 'react';
 import PhaseService from '../services/PhaseService';
 import SeanceService from '../services/SeanceService';
 //let seance_obj = { id: this.state.seance }
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import TimePicker from '@material-ui/lab/TimePicker';
+import DesktopTimePicker from '@material-ui/lab/DesktopTimePicker';
+import TextField from '@material-ui/core/TextField';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import moment from 'moment';
+import StaticTimePicker from '@material-ui/lab/StaticTimePicker';
 
+import DateTimePicker from '@material-ui/lab/DateTimePicker';
 
-
+const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
+const DATE_TIME_FORMAT1 = 'yyyy-MM-DD HH:mm';
 class AddPhaseComponent extends Component {
 
     constructor(props) {
@@ -66,21 +76,17 @@ class AddPhaseComponent extends Component {
         };
         console.log('phase => ' + JSON.stringify(phase));
 
-        if (this.state.id == -1) {
-            console.log('phase => ' + phase);
-
-            PhaseService.addPhase(phase).then(res => {
-                this.props.history.push('/phases/');
-
-            });
-        } else {
-
+        if (this.state.id >= 1) {
             PhaseService.updatePhase(phase, this.state.id).then(res => {
                 this.props.history.push('/phases/');
             });
+
+        } else {
+            console.log('phase => ' + phase);
+            PhaseService.addPhase(phase).then(res => {
+                this.props.history.push('/phases/');
+            });
         }
-
-
     }
 
 
@@ -97,22 +103,22 @@ class AddPhaseComponent extends Component {
         this.setState({ rendu: event.target.value });
     }
 
-    changeStartTimeHandler = (event) => {
-        this.setState({ startTime: event.target.value });
+
+    changeStartTimeHandler = (value) => {
+        console.log(value);
+        const formattedDateTime = moment(value).format(DATE_TIME_FORMAT);
+        this.setState({ startTime: formattedDateTime });
     }
 
-    changeEndTimeHandler = (event) => {
-        this.setState({ endTime: event.target.value });
+    changeEndTimeHandler = (value) => {
+        console.log(value);
+        const formattedDateTime1 = moment(value).format(DATE_TIME_FORMAT1);
+        this.setState({ endTime: formattedDateTime1 });
     }
 
     changeSeanceHandler = (event) => {
         this.setState({ seance: event.target.value });
     }
-
-
-
-
-
 
 
     cancel() {
@@ -148,38 +154,71 @@ class AddPhaseComponent extends Component {
                                     </div>
                                     <div className="form-group">
                                         <label>discription:</label>
-                                        <input placeholder="discription" name="discription" className="form-control"
-                                            value={this.state.discription} onChange={this.changediscriptionHandler} />
+                                        <TextareaAutosize
+                                            aria-label="empty textarea"
+                                            placeholder="discription"
+
+                                            className="form-control"
+                                            value={this.state.discription} onChange={this.changediscriptionHandler}
+                                        />
+
                                     </div>
                                     <div className="form-group">
                                         <label>Rendu:</label>
-                                        <input placeholder="rendu" name="rendu" className="form-control"
-                                            value={this.state.rendu} onChange={this.changeRenduHandler} />
-                                    </div>
+                                        <TextareaAutosize
+                                            aria-label="empty textarea"
+                                            placeholder="rendu"
 
-                                    <div className="form-group">
-                                        <label>Start Time:</label>
-
-                                        <input placeholder="HH:mm" name="startTime" className="form-control"
-                                            value={this.state.startTime} onChange={this.changeStartTimeHandler} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>End Time:</label>
-                                        <input placeholder="HH:mm" name="endTime" className="form-control"
-                                            value={this.state.endTime} onChange={this.changeEndTimeHandler}
+                                            className="form-control"
+                                            value={this.state.rendu} onChange={this.changeRenduHandler}
                                         />
                                     </div>
 
                                     <div className="form-group">
+
+                                        <label>Start Time:</label>
+                                        <br />
+                                        <div>
+                                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                <DateTimePicker
+                                                    inputFormat='yyyy-MM-dd HH:mm'
+                                                    renderInput={(props) => <TextField {...props} />}
+                                                    //label="DateTimePicker"
+
+                                                    className="form-time"
+                                                    value={this.state.startTime}
+                                                    onChange={(newValue) => this.changeStartTimeHandler(newValue)}
+                                                />
+                                            </LocalizationProvider>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>End Time:</label>
+                                        <div>
+                                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                <DateTimePicker
+                                                    inputFormat='yyyy-MM-dd HH:mm'
+                                                    renderInput={(props) => <TextField {...props} />}
+                                                    //label="DateTimePicker"
+                                                    
+                                                    className="form-time"
+                                                    value={this.state.endTime}
+                                                    onChange={(newValue) => this.changeEndTimeHandler(newValue)}
+                                                />
+                                            </LocalizationProvider>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
                                         <label>Seance:</label><br></br>
-                                       
+
                                         <select className="form-select" value={this.state.seance} onChange={this.changeSeanceHandler}>
-                                        <option value="" disabled selected>Select seance</option>
+                                            <option value="" disabled selected>Select seance</option>
                                             {this.state.seances.map((seance) => (
                                                 <option value={seance.id}>{seance.titre}</option>
                                             ))}
                                         </select>
-                                        
+
                                     </div>
                                     <br></br>
 

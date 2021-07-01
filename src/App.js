@@ -11,6 +11,9 @@ import AddSeanceComponent from './components/AddSeanceComponent';
 import HomeComponent from './components/HomeComponent';
 import ListPlanningComponent from './components/ListPlanningComponent';
 import AddPlanningComponent from './components/AddPlanningComponent';
+import ViewPhaseComponent from './components/ViewPhaseComponent';
+import ViewSeanceComponent from './components/ViewSeanceComponent';
+import ViewPlanningComponent from './components/ViewPlanningComponent';
 
 
 
@@ -31,6 +34,9 @@ function App() {
             <Route path="/AddSeance/:id" component ={AddSeanceComponent} ></Route>
             <Route path="/plannings" component ={ListPlanningComponent} ></Route>
             <Route path="/AddPlanning/:id" component ={AddPlanningComponent} ></Route>
+            <Route path="/ViewPhase/:id" component ={ViewPhaseComponent} ></Route>
+            <Route path="/ViewSeance/:id" component ={ViewSeanceComponent} ></Route>
+            <Route path="/ViewPlanning/:id" component ={ViewPlanningComponent} ></Route>
 
            </Switch>
          </div>
