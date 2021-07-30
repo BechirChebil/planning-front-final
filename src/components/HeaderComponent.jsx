@@ -6,7 +6,11 @@ class HeaderComponent extends Component {
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                        <div><a href="http://localhost:3000/" className="navbar-brand" >| HOME |</a><a className="navbar-brand">PLANNING</a></div>
+                        <div><a href="http://localhost:3000/" className="navbar-brand" >| HOME |</a>
+                            <a href="http://localhost:3000/plannings" className="navbar-brand" >| PLANNING |</a>
+                            <a href="http://localhost:3000/seances" className="navbar-brand" >| SEANCES |</a>
+                            <a href="http://localhost:3000/phases" className="navbar-brand" >| PHASES |</a>
+                            </div>
                     </nav>
                 </header>
             </div>

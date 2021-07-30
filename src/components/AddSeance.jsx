@@ -10,7 +10,7 @@ import moment from 'moment';
 
 const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
 
-class AddSeanceComponent extends Component {
+class AddSeance extends Component {
 
 
 
@@ -18,7 +18,7 @@ class AddSeanceComponent extends Component {
         super(props)
 
         this.state = {
-            id: this.props.match.params.id, //step 2
+            id:'', //step 2
             titre: '',
             objectif: '',
             indicationTuteur: '',
@@ -26,8 +26,8 @@ class AddSeanceComponent extends Component {
 
             date: '',
             creneau: '',
-            //planning: null,
-           // plannings: []
+            planning: {id: this.props.match.params.id},
+           // plannings: [] //  [{id: this.props.match.params.id}]
         }
 
         this.changeTitreHandler = this.changeTitreHandler.bind(this);
@@ -40,58 +40,37 @@ class AddSeanceComponent extends Component {
 
 
         this.saveOrUpdateSeance = this.saveOrUpdateSeance.bind(this);
+        
     }
 
 
 
     componentDidMount() {
         PlanningService.getPlannings().then((res) => {
-            this.setState({ plannings: res.data })
-        })
-        if (this.state.id === -1) {
-            return
-        } else {
-            SeanceService.getSeanceById(this.state.id).then((res) => {
-                let seance = res.data;
-                this.setState({
-                    titre: seance.titre,
-                    objectif: seance.objectif,
-                    indicationTuteur: seance.indicationTuteur,
-                    indicationEtudiant: seance.indicationEtudiant,
-                    date: seance.date,
-                    creneau: seance.creneau,
-                    //planning: seance.planning.id
-                });
-            });
-        }
-
+        this.setState({ plannings: res.data });
+        console.log("1hhh", this.state.planning.id);
+    })
     }
 
 
 
 
     saveOrUpdateSeance = (p) => {
-        let planning_obj = { id: this.state.planning }
+        //let planning_obj = { id: this.state.planning }
         p.preventDefault();
         let seance = {
             titre: this.state.titre, objectif: this.state.objectif, indicationTuteur: this.state.indicationTuteur,
-            indicationEtudiant: this.state.indicationEtudiant, date: this.state.date, creneau: this.state.creneau//, planning: planning_obj
+            indicationEtudiant: this.state.indicationEtudiant, date: this.state.date, creneau: this.state.creneau, planning: this.state.planning //planning_obj
         };
         console.log('seance => ' + JSON.stringify(seance));
 
-        if (this.state.id >= 1) {
-
-            SeanceService.updateSeance(seance, this.state.id).then(res => {
-                this.props.history.push('/seances/');
-
-            });
-        } else {
+        
             console.log('seance => ' + seance);
             SeanceService.addSeance(seance).then(res => {
-                this.props.history.push('/seances/');
+                this.props.history.push(`/ViewPlanning/${this.state.planning.id}`);
+                //this.props.history.push('/seances/');
             });
-        }
-
+        
 
     }
 
@@ -123,20 +102,18 @@ class AddSeanceComponent extends Component {
         this.setState({ date: formattedDateTime });
     }
 
-    // changePlanningHandler = (event) => {
-    //     this.setState({ planning: event.target.value });
-    // }
+    changePlanningHandler = (event) => {
+        this.setState({ planning: event.target.value });
+    }
 
     cancel() {
-        this.props.history.push('/seances');
+        this.props.history.push(`/ViewPlanning/${this.state.planning.id}`);
     }
 
     getTitle() {
-        if (this.state.id >= 1) {
-            return <h3 className="text-center">Update Seance</h3>
-        } else {
+       
             return <h3 className="text-center">Add Seance</h3>
-        }
+        
     }
 
 
@@ -201,7 +178,7 @@ class AddSeanceComponent extends Component {
                                         <label>Planning:</label><br></br>
 
                                         <select className="form-select" value={this.state.planning} onChange={this.changePlanningHandler}>
-                                            <option value="" disabled selected>Select planning</option>
+                                            <option value={this.props.match.params.id} disabled selected>Select planning</option>
                                             {this.state.plannings.map((planning) => (
                                                 <option value={planning.id}>{planning.titre}</option>
                                             ))}
@@ -241,4 +218,4 @@ class AddSeanceComponent extends Component {
     }
 }
 
-export default AddSeanceComponent;
+export default AddSeance;

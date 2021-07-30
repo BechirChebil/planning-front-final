@@ -1,31 +1,40 @@
 import React, { Component } from 'react';
 import PhaseService from '../services/PhaseService';
 import SeanceService from '../services/SeanceService';
-//let seance_obj = { id: this.state.seance }
+
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import moment from 'moment';
-
 import DateTimePicker from '@material-ui/lab/DateTimePicker';
+
+// export lil ism class wala function illa 3andik
+//export withRouter(nameofcomponent)
+
+
+
+//import {useHistory} from "react-router-dom";
+
 
 const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
 const DATE_TIME_FORMAT1 = 'yyyy-MM-DD HH:mm';
-class AddPhaseComponent extends Component {
 
+class AddPhase extends Component {
+    
     constructor(props) {
         super(props)
 
         this.state = {
-            id: this.props.match.params.id, //step 2
+            id: '', //step 2
             titre: '',
             discription: '',
             rendu: '',
             startTime: '',
             endTime: '',
-            //seance: null,
-           // seances: []
+            seance: { id: this.props.match.params.id },
+            //isLoading: true
+            //seances: []
             //selectedDateM: new Date("2018-01-01T00:00:00.000Z"),
         }
 
@@ -34,56 +43,42 @@ class AddPhaseComponent extends Component {
         this.changeRenduHandler = this.changeRenduHandler.bind(this);
         this.changeStartTimeHandler = this.changeStartTimeHandler.bind(this);
         this.changeEndTimeHandler = this.changeEndTimeHandler.bind(this);
-        this.changeSeanceHandler = this.changeSeanceHandler.bind(this);
+        //this.changeSeanceHandler = this.changeSeanceHandler.bind(this);
 
         this.saveOrUpdatePhase = this.saveOrUpdatePhase.bind(this);
     }
 
     componentDidMount() {
-        //////////////////
+
         SeanceService.getSeances().then((res) => {
             this.setState({ seances: res.data })
+            console.log("1hhh", this.state.seance.id);
         })
-        //////////////////////
-        if (this.state.id == -1) {
-            return
-        } else {
-            PhaseService.getPhaseById(this.state.id).then((res) => {
-                let phase = res.data;
-                this.setState({
-                    titre: phase.titre,
-                    discription: phase.discription,
-                    rendu: phase.rendu,
-                    startTime: phase.startTime,
-                    endTime: phase.endTime,
-                    //seance: phase.seance.id
-                });
-            })
-        }
+        
+        // this._isMounted = true;
+        // callAPI_or_DB(...).then(result => {
+        //     if (this._isMounted) {
+        //         this.setState({ isLoading: false })
+        //     }
+        // });
     }
 
 
 
     saveOrUpdatePhase = (p) => {
-        let seance_obj = { id: this.state.seance }
+        //let seance_obj = { id: this.state.seance }
         p.preventDefault();
         let phase = {
             titre: this.state.titre, discription: this.state.discription, rendu: this.state.rendu,
-            startTime: this.state.startTime, endTime: this.state.endTime, //seance: seance_obj
+            startTime: this.state.startTime, endTime: this.state.endTime, seance: this.state.seance// seance_obj
         };
         console.log('phase => ' + JSON.stringify(phase));
 
-        if (this.state.id >= 1) {
-            PhaseService.updatePhase(phase, this.state.id).then(res => {
-                this.props.history.push('/phases/');
-            });
-
-        } else {
-            console.log('phase => ' + phase);
-            PhaseService.addPhase(phase).then(res => {
-                this.props.history.push('/phases/');
-            });
-        }
+        console.log('phase => ' + phase);
+        PhaseService.addPhase(phase).then(res => {
+           // this.props.history.push('/phases/');
+            this.props.history.push(`/ViewSeance/${this.state.seance.id}`);
+        });
     }
 
 
@@ -119,21 +114,23 @@ class AddPhaseComponent extends Component {
 
 
     cancel() {
-        this.props.history.push('/phases');
+        //this.props.history.push('/seances');
+        this.props.history.push(`/ViewSeance/${this.state.seance.id}`);
+        
+        //this.props.history.goBack();
+        // call example
+        //<button onClick={this.props.history.goBack}>Back</button>
+        //<button onClick={() => }>Go Back</button>
     }
 
     getTitle() {
-        if (this.state.id >= 1) {
-            return <h3 className="text-center">Update Phase</h3>
-        } else {
-            return <h3 className="text-center">Add Phase</h3>
-        }
+
+        return <h3 className="text-center">Add Phase</h3>
+
     }
 
 
     render() {
-        //let seances =SeanceService.getSeances();
-
         return (
             <div>
                 <div className="container">
@@ -197,7 +194,7 @@ class AddPhaseComponent extends Component {
                                                     inputFormat='yyyy-MM-dd HH:mm'
                                                     renderInput={(props) => <TextField {...props} />}
                                                     //label="DateTimePicker"
-                                                    
+
                                                     className="form-time"
                                                     value={this.state.endTime}
                                                     onChange={(newValue) => this.changeEndTimeHandler(newValue)}
@@ -224,7 +221,6 @@ class AddPhaseComponent extends Component {
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -232,4 +228,4 @@ class AddPhaseComponent extends Component {
     }
 }
 
-export default AddPhaseComponent;
+export default AddPhase;

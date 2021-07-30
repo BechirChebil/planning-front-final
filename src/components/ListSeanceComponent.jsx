@@ -60,7 +60,7 @@ class ListSeanceComponent extends Component {
                                 
                                 <th>date</th>
                                 <th>creneau</th>
-                                <th>planning id</th>
+                                {/* <th>planning id</th> */}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -76,7 +76,7 @@ class ListSeanceComponent extends Component {
                                         
                                         <td>{seance.date} </td>
                                         <td>{seance.creneau} </td>
-                                        <td>{seance.planning.id} </td>
+                                        {/* <td>{seance.planning.id} </td> */}
                                         <td>
                                             <button onClick={()=>this.editSeance(seance.id)} className="btn btn-info">Update</button>
                                             <button style={{marginLeft:"10px"}} onClick={()=>this.deleteSeance(seance.id)} className="btn btn-danger">Delete</button>

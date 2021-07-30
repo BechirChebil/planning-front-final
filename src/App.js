@@ -14,6 +14,12 @@ import AddPlanningComponent from './components/AddPlanningComponent';
 import ViewPhaseComponent from './components/ViewPhaseComponent';
 import ViewSeanceComponent from './components/ViewSeanceComponent';
 import ViewPlanningComponent from './components/ViewPlanningComponent';
+import UpdateSeance from './components/UpdateSeance';
+import AddSeance from './components/AddSeance';
+import AddPhase from './components/AddPhase';
+import UpdatePhase from './components/UpdatePhase';
+import ExportPlanning from './components/ExportPlanning';
+
 
 
 
@@ -30,10 +36,18 @@ function App() {
            
             <Route path="/phases" component ={ListPhaseComponent} ></Route>
             <Route path="/AddPhase/:id" component ={AddPhaseComponent} ></Route>
+            <Route path="/Add2Phase/:id" component ={AddPhase} ></Route>
+            <Route path="/UpdatePhase/:id" component ={UpdatePhase} ></Route>
+
             <Route path="/seances" component ={ListSeanceComponent} ></Route>
             <Route path="/AddSeance/:id" component ={AddSeanceComponent} ></Route>
+            <Route path="/Add2Seance/:id" component ={AddSeance} ></Route>
+            <Route path="/UpdateSeance/:id" component ={UpdateSeance} ></Route>
+            
             <Route path="/plannings" component ={ListPlanningComponent} ></Route>
             <Route path="/AddPlanning/:id" component ={AddPlanningComponent} ></Route>
+            <Route path="/ExportPlanning/:id" component ={ExportPlanning} ></Route>
+            
             <Route path="/ViewPhase/:id" component ={ViewPhaseComponent} ></Route>
             <Route path="/ViewSeance/:id" component ={ViewSeanceComponent} ></Route>
             <Route path="/ViewPlanning/:id" component ={ViewPlanningComponent} ></Route>

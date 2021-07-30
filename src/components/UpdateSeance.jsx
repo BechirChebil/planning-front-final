@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PlanningService from '../services/PlanningService';
 import SeanceService from '../services/SeanceService';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
@@ -10,9 +9,7 @@ import moment from 'moment';
 
 const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
 
-class AddSeanceComponent extends Component {
-
-
+class UpdateSeance extends Component {
 
     constructor(props) {
         super(props)
@@ -25,9 +22,9 @@ class AddSeanceComponent extends Component {
             indicationEtudiant: '',
 
             date: '',
-            creneau: '',
-            //planning: null,
-           // plannings: []
+            creneau: ''
+            // planning: null,
+            //plannings: []
         }
 
         this.changeTitreHandler = this.changeTitreHandler.bind(this);
@@ -45,25 +42,20 @@ class AddSeanceComponent extends Component {
 
 
     componentDidMount() {
-        PlanningService.getPlannings().then((res) => {
-            this.setState({ plannings: res.data })
-        })
-        if (this.state.id === -1) {
-            return
-        } else {
-            SeanceService.getSeanceById(this.state.id).then((res) => {
-                let seance = res.data;
-                this.setState({
-                    titre: seance.titre,
-                    objectif: seance.objectif,
-                    indicationTuteur: seance.indicationTuteur,
-                    indicationEtudiant: seance.indicationEtudiant,
-                    date: seance.date,
-                    creneau: seance.creneau,
-                    //planning: seance.planning.id
-                });
+
+        SeanceService.getSeanceById(this.state.id).then((res) => {
+            let seance = res.data;
+            this.setState({
+                titre: seance.titre,
+                objectif: seance.objectif,
+                indicationTuteur: seance.indicationTuteur,
+                indicationEtudiant: seance.indicationEtudiant,
+                date: seance.date,
+                creneau: seance.creneau,
+                //planning: seance.planning.id
             });
-        }
+        });
+
 
     }
 
@@ -71,26 +63,21 @@ class AddSeanceComponent extends Component {
 
 
     saveOrUpdateSeance = (p) => {
-        let planning_obj = { id: this.state.planning }
+
         p.preventDefault();
         let seance = {
             titre: this.state.titre, objectif: this.state.objectif, indicationTuteur: this.state.indicationTuteur,
-            indicationEtudiant: this.state.indicationEtudiant, date: this.state.date, creneau: this.state.creneau//, planning: planning_obj
+            indicationEtudiant: this.state.indicationEtudiant, date: this.state.date, creneau: this.state.creneau
         };
         console.log('seance => ' + JSON.stringify(seance));
 
-        if (this.state.id >= 1) {
 
-            SeanceService.updateSeance(seance, this.state.id).then(res => {
-                this.props.history.push('/seances/');
 
-            });
-        } else {
-            console.log('seance => ' + seance);
-            SeanceService.addSeance(seance).then(res => {
-                this.props.history.push('/seances/');
-            });
-        }
+        SeanceService.updateSeance(seance, this.state.id).then(res => {
+            this.props.history.push('/seances/');
+
+        });
+
 
 
     }
@@ -123,20 +110,20 @@ class AddSeanceComponent extends Component {
         this.setState({ date: formattedDateTime });
     }
 
-    // changePlanningHandler = (event) => {
-    //     this.setState({ planning: event.target.value });
-    // }
+    changePlanningHandler = (event) => {
+        this.setState({ planning: event.target.value });
+    }
 
+   
     cancel() {
-        this.props.history.push('/seances');
+        
+     this.props.history.goBack();
     }
 
     getTitle() {
-        if (this.state.id >= 1) {
-            return <h3 className="text-center">Update Seance</h3>
-        } else {
-            return <h3 className="text-center">Add Seance</h3>
-        }
+
+        return <h3 className="text-center">Update Seance</h3>
+
     }
 
 
@@ -187,7 +174,7 @@ class AddSeanceComponent extends Component {
                                         />
                                     </div>
 
-                                    
+
                                     <div className="form-group">
                                         <label>Creneau:</label>
                                         <select className="form-select" value={this.state.creneau} onChange={this.changeCreneauHandler}>
@@ -211,14 +198,14 @@ class AddSeanceComponent extends Component {
                                     <div className="form-group">
                                         <label>Date:</label>
                                         {/* <input type="datetime-local" placeholder="yyyy-MM-dd HH:mm" name="date" className="form-control"
-                                            value={this.state.date} onChange={this.changeDateHandler} /> */}
+                                                value={this.state.date} onChange={this.changeDateHandler} /> */}
                                         <div>
                                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                                 <DateTimePicker
                                                     inputFormat='yyyy-MM-dd HH:mm'
                                                     renderInput={(props) => <TextField {...props} />}
                                                     //label="DateTimePicker"
-                                                    
+
                                                     className="form-time"
                                                     value={this.state.date}
                                                     onChange={(newValue) => this.changeDateHandler(newValue)}
@@ -239,6 +226,7 @@ class AddSeanceComponent extends Component {
             </div>
         );
     }
+
 }
 
-export default AddSeanceComponent;
+export default UpdateSeance;

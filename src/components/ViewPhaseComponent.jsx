@@ -31,7 +31,7 @@ class ViewPhaseComponent extends Component {
     render() {
         const { phase } = this.state;
         console.log(phase.seance);
-        let seance_obj = { id: this.state.phase.seance }
+       // let seance_obj = { id: this.state.phase.seance }
         return (
             <div>
                 <br></br>
@@ -42,7 +42,7 @@ class ViewPhaseComponent extends Component {
                         <div className="row">
                             <label>Titre: </label>
                             <input className="form-control" disabled
-                                value={" ",phase.titre} />
+                                value={phase.titre} />
                             
                         </div>
 

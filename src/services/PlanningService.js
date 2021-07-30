@@ -18,6 +18,9 @@ class PlanningService {
     updatePlanning(planning, planningId){
         return axios.put('/planning/'+ planningId, planning);
     }
+    exportPlanning(planning){
+        return axios.post('/planning/', planning);
+    }
     deletePlanning(planningId){
         return axios.delete('/planning/'+ planningId);
     }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PhaseService from '../services/PhaseService';
-import SeanceService from '../services/SeanceService';
 //let seance_obj = { id: this.state.seance }
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
@@ -12,7 +11,7 @@ import DateTimePicker from '@material-ui/lab/DateTimePicker';
 
 const DATE_TIME_FORMAT = 'yyyy-MM-DD HH:mm';
 const DATE_TIME_FORMAT1 = 'yyyy-MM-DD HH:mm';
-class AddPhaseComponent extends Component {
+class UpdatePhase extends Component {
 
     constructor(props) {
         super(props)
@@ -23,9 +22,9 @@ class AddPhaseComponent extends Component {
             discription: '',
             rendu: '',
             startTime: '',
-            endTime: '',
+            endTime: ''
             //seance: null,
-           // seances: []
+            // seances: []
             //selectedDateM: new Date("2018-01-01T00:00:00.000Z"),
         }
 
@@ -40,50 +39,37 @@ class AddPhaseComponent extends Component {
     }
 
     componentDidMount() {
-        //////////////////
-        SeanceService.getSeances().then((res) => {
-            this.setState({ seances: res.data })
+        
+
+        PhaseService.getPhaseById(this.state.id).then((res) => {
+            let phase = res.data;
+            this.setState({
+                titre: phase.titre,
+                discription: phase.discription,
+                rendu: phase.rendu,
+                startTime: phase.startTime,
+                endTime: phase.endTime,
+                //seance: phase.seance.id
+            });
         })
-        //////////////////////
-        if (this.state.id == -1) {
-            return
-        } else {
-            PhaseService.getPhaseById(this.state.id).then((res) => {
-                let phase = res.data;
-                this.setState({
-                    titre: phase.titre,
-                    discription: phase.discription,
-                    rendu: phase.rendu,
-                    startTime: phase.startTime,
-                    endTime: phase.endTime,
-                    //seance: phase.seance.id
-                });
-            })
-        }
+
     }
 
 
 
     saveOrUpdatePhase = (p) => {
-        let seance_obj = { id: this.state.seance }
+        //let seance_obj = { id: this.state.seance }
         p.preventDefault();
         let phase = {
             titre: this.state.titre, discription: this.state.discription, rendu: this.state.rendu,
-            startTime: this.state.startTime, endTime: this.state.endTime, //seance: seance_obj
+            startTime: this.state.startTime, endTime: this.state.endTime//, seance: seance_obj
         };
         console.log('phase => ' + JSON.stringify(phase));
 
-        if (this.state.id >= 1) {
-            PhaseService.updatePhase(phase, this.state.id).then(res => {
-                this.props.history.push('/phases/');
-            });
+        PhaseService.updatePhase(phase, this.state.id).then(res => {
+            this.props.history.push('/phases/');
+        });
 
-        } else {
-            console.log('phase => ' + phase);
-            PhaseService.addPhase(phase).then(res => {
-                this.props.history.push('/phases/');
-            });
-        }
     }
 
 
@@ -123,11 +109,9 @@ class AddPhaseComponent extends Component {
     }
 
     getTitle() {
-        if (this.state.id >= 1) {
+  
             return <h3 className="text-center">Update Phase</h3>
-        } else {
-            return <h3 className="text-center">Add Phase</h3>
-        }
+        
     }
 
 
@@ -197,7 +181,7 @@ class AddPhaseComponent extends Component {
                                                     inputFormat='yyyy-MM-dd HH:mm'
                                                     renderInput={(props) => <TextField {...props} />}
                                                     //label="DateTimePicker"
-                                                    
+
                                                     className="form-time"
                                                     value={this.state.endTime}
                                                     onChange={(newValue) => this.changeEndTimeHandler(newValue)}
@@ -232,4 +216,4 @@ class AddPhaseComponent extends Component {
     }
 }
 
-export default AddPhaseComponent;
+export default UpdatePhase;

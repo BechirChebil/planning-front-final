@@ -58,7 +58,7 @@ class ListPhaseComponent extends Component {
                                 <th>Rendu</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
-                                <th>Seance id</th>
+                                {/* <th>Seance id</th> */}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -72,7 +72,7 @@ class ListPhaseComponent extends Component {
                                             <td style={{ maxWidth: "200px"}}>{phase.rendu} </td>
                                             <td>{phase.startTime} </td>
                                             <td>{phase.endTime} </td>
-                                            <td>{phase.seance.id} </td>
+                                            {/* <td>{phase.seance.id} </td> */}
                                             <td>
                                                 <button onClick={() => this.editPhase(phase.id)} className="btn btn-info">Update</button>
                                                 <button style={{ marginLeft: "10px" }} onClick={() => this.deletePhase(phase.id)} className="btn btn-danger">Delete</button>

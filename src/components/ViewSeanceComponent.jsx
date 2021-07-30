@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SeanceService from '../services/SeanceService';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import PhaseService from '../services/PhaseService';
+
 
 class ViewSeanceComponent extends Component {
 
@@ -9,41 +11,70 @@ class ViewSeanceComponent extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            seance: {},
+            seance: {}
         }
-        
+
         this.editSeance = this.editSeance.bind(this);
+
+        this.addPhase = this.addPhase.bind(this);
+        this.editPhase = this.editPhase.bind(this);
+        this.deletePhase = this.deletePhase.bind(this);
+    }
+
+    async componentDidMount() {
+        await SeanceService.getSeanceById(this.state.id).then(res => {
+            this.setState({ seance: res.data });
+            this.state.seance.phases.map(e => console.log(e.titre));
+        })
+        PhaseService.getPhases().then((res)=>{
+            this.setState({phases: res.data})
+        })
+    }
+
+    addPhase(id) {
+        this.props.history.push(`/Add2Phase/${id}`);
+    }
+
+    editPhase(id) {
+        this.props.history.push(`/UpdatePhase/${id}`);
+    }
+
+    deletePhase(id) {
+        PhaseService.deletePhase(id).then(res => {
+            this.setState({ phases: this.state.phases.filter(phase => phase.id !== id) });
+        })
+        window.location.reload(false);
+    }
+
+    viewPhase(id) {
+        this.props.history.push(`/ViewPhase/${id}`);
+
     }
 
     editSeance(id) {
         this.props.history.push(`/AddSeance/${id}`);
     }
+
     retour() {
         this.props.history.push('/seances');
     }
 
-    componentDidMount() {
-        SeanceService.getSeanceById(this.state.id).then(res => {
-            this.setState({ seance: res.data });
-        })
-    }
-
     render() {
         const { seance } = this.state;
-        console.log(seance.planning);
-        let planning_obj = { id: this.state.seance.planning }
+        // console.log(seance.planning);
+        // let planning_obj = { id: this.state.seance.planning }
         return (
             <div>
                 <br></br>
-                <div className="card col-md-6 ofset-md-3">
+                <div className="card col-md-6 offset-md-3 offset-md-3">
                     <h3 className="text-center">View seance details</h3>
                     <div className="card-body">
 
                         <div className="row">
                             <label>Titre: </label>
                             <input className="form-control" disabled
-                                value={" ",seance.titre} />
-                            
+                                value={seance.titre} />
+
                         </div>
 
                         <div className="row">
@@ -61,8 +92,8 @@ class ViewSeanceComponent extends Component {
                         <div className="row">
                             <label>Creneau: </label>
                             <input className="form-control" disabled
-                                value={" ",seance.creneau} />
-                            
+                                value={seance.creneau} />
+
                         </div>
 
                         <div className="row">
@@ -82,17 +113,59 @@ class ViewSeanceComponent extends Component {
                                 value={seance.indicationEtudiant} />
                         </div>
 
-                        <div className="row">
+                        {/* <div className="row">
                             <label>Planning_id: </label>
                             <input className="form-control" disabled
                                 value={seance.planning ? seance.planning.titre : 'None'} />
                             <div></div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <br></br>
                 <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginLeft: "10px" }}>Retour</button>
-                <button style={{ marginLeft: "400px"}} onClick={() => this.editSeance(seance.id)} className="btn btn-info">Update</button>
+                <button style={{ marginLeft: "400px" }} onClick={() => this.editSeance(seance.id)} className="btn btn-info">Update</button>
+                <br></br><br></br>
+                <h2 className="text-center">List Phase</h2>
+                <button className="btn btn-primary" onClick={() => this.addPhase(seance.id)}>Add Phase</button>
+                <br></br><br></br>
+                <div className="row">
+                    <table className="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Discription</th>
+                                <th>Rendu</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                {/* <th>Seance id</th> */}
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.seance.titre != null ? this.state.seance.phases.map(
+                                    phase =>
+                                        <tr key={phase.id}>
+                                            <td>{phase.titre} </td>
+                                            <td>{phase.discription} </td>
+                                            <td style={{ maxWidth: "200px" }}>{phase.rendu} </td>
+                                            <td>{phase.startTime} </td>
+                                            <td>{phase.endTime} </td>
+                                            {/* <td>{phase.seance.id} </td> */}
+                                            <td>
+                                                <button onClick={() => this.editPhase(phase.id)} className="btn btn-info">Update</button>
+                                                <button style={{ marginLeft: "10px" }} onClick={() => {
+                                                    if (window.confirm('Are you sure you wish to delete this item?'))
+                                                        this.deletePhase(phase.id)
+                                                }} className="btn btn-danger">Delete</button>
+                                                <button style={{ marginLeft: "10px" }} onClick={() => this.viewPhase(phase.id)} className="btn btn-info">View</button>
+                                            </td>
+                                        </tr>
+                                ) : null
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }
