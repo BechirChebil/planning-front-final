@@ -25,7 +25,7 @@ class AddPhaseComponent extends Component {
             startTime: '',
             endTime: '',
             //seance: null,
-           // seances: []
+            // seances: []
             //selectedDateM: new Date("2018-01-01T00:00:00.000Z"),
         }
 
@@ -45,7 +45,7 @@ class AddPhaseComponent extends Component {
             this.setState({ seances: res.data })
         })
         //////////////////////
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             return
         } else {
             PhaseService.getPhaseById(this.state.id).then((res) => {
@@ -65,7 +65,7 @@ class AddPhaseComponent extends Component {
 
 
     saveOrUpdatePhase = (p) => {
-        let seance_obj = { id: this.state.seance }
+        // let seance_obj = { id: this.state.seance }
         p.preventDefault();
         let phase = {
             titre: this.state.titre, discription: this.state.discription, rendu: this.state.rendu,
@@ -197,7 +197,7 @@ class AddPhaseComponent extends Component {
                                                     inputFormat='yyyy-MM-dd HH:mm'
                                                     renderInput={(props) => <TextField {...props} />}
                                                     //label="DateTimePicker"
-                                                    
+
                                                     className="form-time"
                                                     value={this.state.endTime}
                                                     onChange={(newValue) => this.changeEndTimeHandler(newValue)}

@@ -11,7 +11,7 @@ class ViewPhaseComponent extends Component {
             id: this.props.match.params.id,
             phase: {},
         }
-        
+
         this.editPhase = this.editPhase.bind(this);
     }
 
@@ -19,7 +19,7 @@ class ViewPhaseComponent extends Component {
         this.props.history.push(`/AddPhase/${id}`);
     }
     retour() {
-        this.props.history.push('/phases');
+        this.props.history.goBack();
     }
 
     componentDidMount() {
@@ -31,7 +31,7 @@ class ViewPhaseComponent extends Component {
     render() {
         const { phase } = this.state;
         console.log(phase.seance);
-       // let seance_obj = { id: this.state.phase.seance }
+        // let seance_obj = { id: this.state.phase.seance }
         return (
             <div>
                 <br></br>
@@ -43,7 +43,7 @@ class ViewPhaseComponent extends Component {
                             <label>Titre: </label>
                             <input className="form-control" disabled
                                 value={phase.titre} />
-                            
+
                         </div>
 
                         <div className="row">
@@ -57,7 +57,7 @@ class ViewPhaseComponent extends Component {
                                 className="form-control"
 
                             />
-                            
+
                         </div>
 
                         <div className="row">
@@ -87,7 +87,7 @@ class ViewPhaseComponent extends Component {
                 </div>
                 <br></br>
                 <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginLeft: "10px" }}>Retour</button>
-                <button style={{ marginLeft: "400px"}} onClick={() => this.editPhase(phase.id)} className="btn btn-info">Update</button>
+                <button style={{ marginLeft: "400px" }} onClick={() => this.editPhase(phase.id)} className="btn btn-info">Update</button>
             </div>
         );
     }

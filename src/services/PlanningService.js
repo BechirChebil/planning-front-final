@@ -6,23 +6,23 @@ import axios from 'axios';
 
 class PlanningService {
 
-    getPlannings(){
+    getPlannings() {
         return axios.get(`/plannings/`)
     }
-    addPlanning(planning){
+    addPlanning(planning) {
         return axios.post('/planning/', planning);
     }
-    getPlanningById(planningId){
-        return axios.get('/planning/'+ planningId);
+    getPlanningById(planningId) {
+        return axios.get('/planning/' + planningId);
     }
-    updatePlanning(planning, planningId){
-        return axios.put('/planning/'+ planningId, planning);
+    updatePlanning(planning, planningId) {
+        return axios.put('/planning/' + planningId, planning);
     }
-    exportPlanning(planning){
-        return axios.post('/planning/', planning);
+    exportPlanning(planningId) {
+        return axios.post('/planning-copy/' + planningId);
     }
-    deletePlanning(planningId){
-        return axios.delete('/planning/'+ planningId);
+    deletePlanning(planningId) {
+        return axios.delete('/planning/' + planningId);
     }
 }
 export default new PlanningService()

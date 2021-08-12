@@ -16,17 +16,13 @@ class HomeComponent extends Component {
     }
     render() {
         return (
-            <div>
-                <br></br>
-                <button className="btn btn-danger" onClick={this.cancel2.bind(this)} style={{ marginLeft: "100px", width: "200px" }}>PLANNING</button>
-                <button className="btn btn-danger" onClick={this.cancel1.bind(this)} style={{ marginLeft: "200px", width: "200px" }}>SEANCE</button>
-                <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ marginLeft: "200px", width: "200px" }}>PHASE</button>
-                <br></br><br/>
-                <button className="btn btn-danger" onClick={this.historique.bind(this)} style={{ marginLeft: "100px", width: "200px" }}>HISTORIQUE</button>
-
-
-
-
+            <div style={{ margin: "10px" }}>
+                <center>
+                    <button className="btn btn-danger" onClick={this.cancel2.bind(this)} style={{ margin: "10px", width: "200px" }}>PLANNING</button>
+                    <button className="btn btn-danger" onClick={this.cancel1.bind(this)} style={{ margin: "10px", width: "200px" }}>SEANCE</button>
+                    <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ margin: "10px", width: "200px" }}>PHASE</button>
+                    <button className="btn btn-danger" onClick={this.historique.bind(this)} style={{ margin: "10px", width: "200px" }}>HISTORIQUE</button>
+                </center>
             </div>
         );
     }

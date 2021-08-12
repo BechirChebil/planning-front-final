@@ -26,8 +26,8 @@ class ViewSeanceComponent extends Component {
             this.setState({ seance: res.data });
             this.state.seance.phases.map(e => console.log(e.titre));
         })
-        PhaseService.getPhases().then((res)=>{
-            this.setState({phases: res.data})
+        PhaseService.getPhases().then((res) => {
+            this.setState({ phases: res.data })
         })
     }
 
@@ -56,7 +56,7 @@ class ViewSeanceComponent extends Component {
     }
 
     retour() {
-        this.props.history.push('/seances');
+        this.props.history.goBack();
     }
 
     render() {
@@ -121,10 +121,11 @@ class ViewSeanceComponent extends Component {
                         </div> */}
                     </div>
                 </div>
-                <br></br>
-                <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginLeft: "10px" }}>Retour</button>
-                <button style={{ marginLeft: "400px" }} onClick={() => this.editSeance(seance.id)} className="btn btn-info">Update</button>
-                <br></br><br></br>
+
+                <center style={{ margin: "30px" }}>
+                    <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginRight: "100px" }} >Retour</button>
+                    <button style={{ marginLeft: "100px" }} onClick={() => this.editSeance(seance.id)} className="btn btn-info">Update</button>
+                </center>
                 <h2 className="text-center">List Phase</h2>
                 <button className="btn btn-primary" onClick={() => this.addPhase(seance.id)}>Add Phase</button>
                 <br></br><br></br>

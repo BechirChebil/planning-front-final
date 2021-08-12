@@ -27,7 +27,7 @@ class AddSeanceComponent extends Component {
             date: '',
             creneau: '',
             //planning: null,
-           // plannings: []
+            // plannings: []
         }
 
         this.changeTitreHandler = this.changeTitreHandler.bind(this);
@@ -71,7 +71,7 @@ class AddSeanceComponent extends Component {
 
 
     saveOrUpdateSeance = (p) => {
-        let planning_obj = { id: this.state.planning }
+        // let planning_obj = { id: this.state.planning }
         p.preventDefault();
         let seance = {
             titre: this.state.titre, objectif: this.state.objectif, indicationTuteur: this.state.indicationTuteur,
@@ -187,7 +187,7 @@ class AddSeanceComponent extends Component {
                                         />
                                     </div>
 
-                                    
+
                                     <div className="form-group">
                                         <label>Creneau:</label>
                                         <select className="form-select" value={this.state.creneau} onChange={this.changeCreneauHandler}>
@@ -218,7 +218,7 @@ class AddSeanceComponent extends Component {
                                                     inputFormat='yyyy-MM-dd HH:mm'
                                                     renderInput={(props) => <TextField {...props} />}
                                                     //label="DateTimePicker"
-                                                    
+
                                                     className="form-time"
                                                     value={this.state.date}
                                                     onChange={(newValue) => this.changeDateHandler(newValue)}

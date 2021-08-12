@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PlanningService from '../services/PlanningService';
 import SeanceService from '../services/SeanceService';
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import CahierService from '../services/CahierService';
 
 class ViewPlanningComponent extends Component {
 
@@ -9,8 +11,9 @@ class ViewPlanningComponent extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            planning: {}
-
+            planning: {},
+            direction: 'asc',
+            sortby: ""
         }
 
         this.editPlanning = this.editPlanning.bind(this);
@@ -18,6 +21,9 @@ class ViewPlanningComponent extends Component {
         this.addSeance = this.addSeance.bind(this);
         this.editSeance = this.editSeance.bind(this);
         this.deleteSeance = this.deleteSeance.bind(this);
+        this.sortByHandler = this.sortByHandler.bind(this);
+        this.viewCahier = this.viewCahier.bind(this);
+
     }
 
 
@@ -31,6 +37,7 @@ class ViewPlanningComponent extends Component {
         SeanceService.getSeances().then((res) => {
             this.setState({ seances: res.data })
         })
+        this.sortByHandler('date')
     }
 
     addSeance(id) {
@@ -62,19 +69,47 @@ class ViewPlanningComponent extends Component {
         this.props.history.push('/plannings');
     }
 
+    viewCahier() {
+        this.props.history.push({
+            pathname: `/planningCahier/${this.props.match.params.id}`,
+        })
+    }
+    sortByHandler = (key) => {
+        this.setState({
+            planning: {
+                seances: [].concat(this.state.planning.seances)
+                    .sort((a, b) => this.state.direction === 'asc'
+                        ? (a[key] > b[key] ? 1 : -1) : a[key] < b[key] ? 1 : -1),
+                id: this.state.planning.id,
+                startTime: this.state.planning.startTime,
+                titre: this.state.planning.titre,
+
+            },
+
+            direction:
+                this.state.direction === 'asc'
+                    ? 'desc'
+                    : 'asc',
+
+            sortby: key
+        },
+        )
+    }
     render() {
 
         const { planning } = this.state;
         // planning.seances.map(e=>e.id);
-        console.log("2", this.state.planning.titre);
+        // console.log("2", this.state.planning);
 
         //let seance_obj = { id: this.state.planning.seance }
         return (
             <div>
                 {/*   {this.state.planning.seances.map((e)=><text>{e.titre}</text>)} */}
                 <br></br>
+
                 <div className="card col-md-6 offset-md-3 offset-md-3">
                     <h3 className="text-center">View planning details</h3>
+
                     <div className="card-body">
 
                         <div className="row">
@@ -88,25 +123,64 @@ class ViewPlanningComponent extends Component {
                             <input className="form-control" disabled
                                 value={this.state.planning.startTime} />
                         </div>
+                        <br></br>
+                        <button className="btn btn-primary" onClick={this.viewCahier.bind(this)} style={{ width: "100%" }} >Notebook</button>
+
                     </div>
                 </div>
-                <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginLeft: "350px" }} >Retour</button>
-                <button style={{ marginLeft: "400px" }} onClick={() => this.editPlanning(this.state.planning.id)} className="btn btn-info">Update</button>
-                <br></br><br></br>
+                <center style={{ margin: "30px" }}>
+                    <button className="btn btn-success" onClick={this.retour.bind(this)} style={{ marginRight: "100px" }} >Retour</button>
+                    <button style={{ marginLeft: "100px" }} onClick={() => this.editPlanning(this.state.planning.id)} className="btn btn-info">Update</button>
+                </center>
                 <h2 className="text-center">List Seance</h2>
                 <button className="btn btn-primary" onClick={() => this.addSeance(planning.id)}>Add Seance</button>
                 <br></br><br></br>
                 {/* <div className="row"> */}
                 <table className="table table-striped table-bordered">
                     <thead>
-                        <tr>
-                            <th>titre</th>
-                            <th>objectif</th>
-                            <th>indicationTuteur</th>
-                            <th>indicationEtudiant</th>
 
-                            <th>date</th>
-                            <th>creneau</th>
+                        <tr>
+                            <th onClick={() => this.sortByHandler('titre')}>
+                                titre {this.state.sortby === 'titre' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
+                            <th onClick={() => this.sortByHandler('objectif')}>
+                                objectif
+                                {this.state.sortby === 'objectif' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
+                            <th onClick={() => this.sortByHandler('indicationTuteur')}>
+                                indicationTuteur
+                                {this.state.sortby === 'indicationTuteur' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
+                            <th onClick={() => this.sortByHandler('indicationEtudiant')}>
+                                indicationEtudiant
+                                {this.state.sortby === 'indicationEtudiant' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
+                            <th onClick={() => this.sortByHandler('date')} >
+                                date
+                                {this.state.sortby === 'date' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
+                            <th onClick={() => this.sortByHandler('creneau')}>
+                                creneau
+                                {this.state.sortby === 'creneau' ?
+                                    (this.state.direction === 'asc' ? <FaArrowUp /> : <FaArrowDown />) :
+                                    ''
+                                }
+                            </th>
 
                             <th>Actions</th>
                         </tr>

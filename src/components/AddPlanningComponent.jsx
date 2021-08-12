@@ -29,7 +29,7 @@ class AddPlanningComponent extends Component {
             return
         }
         else if (this.state.id < 0) {//export
-            PlanningService.getPlanningById(this.state.id*(-1)).then((res) => {
+            PlanningService.getPlanningById(this.state.id * (-1)).then((res) => {
                 let planning = res.data;
                 this.setState({
                     titre: planning.titre,
@@ -54,17 +54,17 @@ class AddPlanningComponent extends Component {
 
         if (this.state.id == 0) {//add
             PlanningService.addPlanning(planning).then(res => {
-                console.log(" Add :",planning);
+                console.log(" Add :", planning);
                 console.log('planning => ' + JSON.stringify(planning));
                 this.props.history.push('/plannings/');
             });
         }
-        else if(this.state.id < 0) {//export
+        else if (this.state.id < 0) {//export
             PlanningService.addPlanning(planning).then(res => {
                 this.props.history.push('/plannings/');
             })
         }
-         else {//update
+        else {//update
             PlanningService.updatePlanning(planning, this.state.id).then(res => {
                 this.props.history.push('/plannings/');
             });
@@ -77,7 +77,7 @@ class AddPlanningComponent extends Component {
         this.setState({ titre: event.target.value });
     }
 
-   
+
     changeStartTimeHandler = (value) => {
         console.log(value);
         const formattedDateTime = moment(value).format(DATE_TIME_FORMAT);
@@ -86,28 +86,28 @@ class AddPlanningComponent extends Component {
 
     cancel() {
         //this.props.history.push('/plannings');
-        
-        
+
+
         if (this.state.id == 0) {
-           
-                this.props.history.push('/plannings/');
-           
+
+            this.props.history.push('/plannings/');
+
         }
-        else if(this.state.id < 0) {
-           
-                this.props.history.push('/plannings/');
-            
+        else if (this.state.id < 0) {
+
+            this.props.history.push('/plannings/');
+
         }
-         else {
-           this.props.history.push(`/ViewPlanning/${this.state.id}`);
-         }
-           
+        else {
+            this.props.history.push(`/ViewPlanning/${this.state.id}`);
+        }
+
     }
 
     getTitle() {
-        if (this.state.id ==0) {
+        if (this.state.id == 0) {
             return <h3 className="text-center">Add Planning</h3>
-        }else if(this.state.id<0) {
+        } else if (this.state.id < 0) {
             return <h3 className="text-center">Exporter Planning</h3>
         } else {
             return <h3 className="text-center">Update Planning</h3>
@@ -126,10 +126,10 @@ class AddPlanningComponent extends Component {
                             <div className="card-body">
                                 <form>
                                     <div className="form-group">
-                                        <label>titre:</label><br/><br />
+                                        <label>titre:</label><br /><br />
                                         <input placeholder="titre" name="titre" className="form-control"
                                             value={this.state.titre} onChange={this.changeTitreHandler} />
-                                    </div><br/>
+                                    </div><br />
                                     <div className="form-group">
                                         <label>start time:</label><br /><br />
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -138,10 +138,10 @@ class AddPlanningComponent extends Component {
                                                 renderInput={(props) => <TextField {...props} />}
                                                 className="form-date"
                                                 value={this.state.startTime}
-                                                onChange={(newValue) =>this.changeStartTimeHandler(newValue)}
+                                                onChange={(newValue) => this.changeStartTimeHandler(newValue)}
                                             />
                                         </LocalizationProvider>
-                                     
+
                                     </div><br />
 
 

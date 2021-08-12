@@ -74,7 +74,7 @@ class UpdateSeance extends Component {
 
 
         SeanceService.updateSeance(seance, this.state.id).then(res => {
-            this.props.history.push('/seances/');
+            this.props.history.goBack();
 
         });
 
